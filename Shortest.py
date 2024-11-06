@@ -15,9 +15,9 @@ def BFS_search():
     return paths_from_start.get(target_node, None)#aqui intentamos extraer el camino especifico entre startnode y target node. busca la clave targetnode dentro de pathsfromstart si target_node está en el diccionario denuelve el camino almacenado para ese nodo (que es el mas corto) si no hay camino, sale none
 ##DFS
 def DFS_search():
-    paths_from_start = dfs_paths(graph, start_node)
+    paths_from_start = dfs_paths(graph, start_node) # aqui creamos un diccionario desde el nodo de inicio hasta todos los demas nodos del grafo
 
-    return paths_from_start.get(target_node, None)
+    return paths_from_start.get(target_node, None) #aqui extraemos la clave que contiene el nodo target del diccionario
 
 shortest_path_result = BFS_search()
 deep_path_result = DFS_search()
