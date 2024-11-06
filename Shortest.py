@@ -1,17 +1,16 @@
 from Read_Data import Leerdatosdegrafo #Con este modulo leemos la data
-from BFS import bfs_paths #con este modulo utilizamos bfs
-from DFS import dfs_paths #con este modulo utilizamos dfs
 import timeit #para medir y comparar los tiempos
+from funcionesGrafos import bfs_paths, dfs_paths
 
 file = 'facebook_combined.txt' #la data
 graph = Leerdatosdegrafo(file) #Establezco un el grafo en esta variable
 
 start_node = 0 #Aqui ponemos el nodo con inicial 'start_node'
 target_node = 2879 #nuestra función intentará buscar el camino más corto desde el start_node hasta este nodo (si es que existe)
-
 ##BFS
 def BFS_search():
     paths_from_start = bfs_paths(graph, start_node) #aqui creamos un diccionario donde cada clave es un nodo que start_node puede alcanzar. cada valor es una lista que representa el camino más corto desde nuestro 'start mode'
+    print(paths_from_start)
     return paths_from_start.get(target_node, None)#aqui intentamos extraer el camino especifico entre startnode y target node. busca la clave targetnode dentro de pathsfromstart si target_node está en el diccionario denuelve el camino almacenado para ese nodo (que es el mas corto) si no hay camino, sale none
 ##DFS
 def DFS_search():
