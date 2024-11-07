@@ -10,21 +10,16 @@ import modulo3 as m3
 # Cargar datos
 file = 'Datos.txt'  # Reemplaza con tu archivo de datos
 graph_network = Leerdatosdegrafo_numeros(file)
+file_2 = 'facebook_combined.txt'
+graph_network_2 = Leerdatosdegrafo_numeros(file_2)
 
 #Social Networks
+# Pregunta 1
 # Mostrar número de grupos de amigos (con DFS y BFS)
 nroGruposDFS = fg.find_friend_groups_dfs(graph_network)
 nroGruposBFS = fg.find_friend_groups_bfs(graph_network)
 print(f"Número de grupos de amigos (DFS): {nroGruposDFS}")
 print(f"Número de grupos de amigos (BFS): {nroGruposBFS}")
-
-# Mostrar recomendaciones de amistad
-recomendaciones = fg.recommend_friends(graph_network)
-print("Recomendaciones de amistad:", recomendaciones)
-
-# Mostrar el amigo más popular
-amigoPopular, nroAmigos = fg.most_popular_friend(graph_network)
-print(f"Amigo más popular: {amigoPopular} con {nroAmigos} amigos.")
 
 # Tiempo de ejecución para encontrar grupos de amigos usando DFS y BFS
 execution_time_dfs = timeit.timeit(lambda: fg.find_friend_groups_dfs(graph_network), number=1)
@@ -32,19 +27,34 @@ execution_time_bfs = timeit.timeit(lambda: fg.find_friend_groups_bfs(graph_netwo
 print(f"Tiempo de ejecución (DFS): {execution_time_dfs:.5f} segundos")
 print(f"Tiempo de ejecución (BFS): {execution_time_bfs:.5f} segundos")
 
-# Verificar si hay ciclos en el grafo
-cycle_exists = fg.has_cycle(graph_network)
-print("¿El grafo tiene ciclos?", "Sí" if cycle_exists else "No")
+# Pregunta 2
+# Mostrar recomendaciones de amistad
+recomendaciones = fg.recommend_friends(graph_network)
+print("Recomendaciones de amistad:", recomendaciones)
 
-# Ejemplo de uso de shortest_path
-person1 = 1  # Reemplaza con el nodo inicial
-person2 = 2  # Reemplaza con el nodo objetivo
-path = fg.shortest_path(graph_network, person1, person2)
+#Pregunta 3
+# Mostrar el amigo más popular
+amigoPopular, nroAmigos = fg.most_popular_friend(graph_network)
+print(f"Amigo más popular: {amigoPopular} con {nroAmigos} amigos.")
+
+#Pregunta 4
+# Mostrar el camino más corto entre dos personas de la red
+
+person1 = 0  # Reemplaza con el nodo inicial
+person2 = 2879 # Reemplaza con el nodo objetivo
+path = fg.bfs_paths(graph_network_2, person1).get(person2, None)
 if path:
     print(f"El camino más corto entre {person1} y {person2} es: {path}")
 else:
     print(f"No hay camino entre {person1} y {person2}.")
 print("========================================================================")
+
+# Verificar si hay ciclos en el grafo
+cycle_exists = fg.has_cycle(graph_network)
+print("¿El grafo tiene ciclos?", "Sí" if cycle_exists else "No")
+
+# Ejemplo de uso de shortest_path
+
 #Market Basket Analysis
 #Pregunta 1
 file = 'DatosL.txt'  # Ruta al archivo de transacciones
