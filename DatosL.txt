@@ -1,8 +1,25 @@
-['pan', 'huevos', 'queso']
-['pan', 'mantequilla', 'leche']
-['leche', 'huevos']
-['pan']
-['pan', 'huevos', 'queso']
-['queso', 'jamon']
-['jamon', 'lechuga', 'queso']
-['queso', 'lechuga']
+['leche', 'pan', 'huevos', 'jamon']
+['yogurt', 'queso', 'lechuga']
+['mantequilla', 'huevos', 'pan']
+['pan', 'leche', 'jamon', 'yogurt']
+['queso', 'huevos', 'mantequilla']
+['lechuga', 'leche', 'pan']
+['mantequilla', 'jamon', 'yogurt']
+['pan', 'queso', 'lechuga', 'huevos']
+['jamon', 'leche', 'queso']
+['lechuga', 'pan', 'huevos', 'yogurt']
+['mantequilla', 'leche', 'queso', 'pan']
+['jamon', 'pan', 'lechuga']
+['huevos', 'yogurt', 'leche', 'mantequilla']
+['pan', 'mantequilla', 'lechuga']
+['queso', 'yogurt', 'jamon']
+['huevos', 'leche', 'jamon']
+['pan', 'mantequilla', 'yogurt']
+['lechuga', 'huevos', 'pan', 'leche']
+['jamon', 'pan', 'queso', 'mantequilla']
+['leche', 'queso', 'lechuga', 'huevos']
+
+
+
+
+
