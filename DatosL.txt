@@ -1,0 +1,8 @@
+['pan', 'huevos', 'queso']
+['pan', 'mantequilla', 'leche']
+['leche', 'huevos']
+['pan']
+['pan', 'huevos', 'queso']
+['queso', 'jamon']
+['jamon', 'lechuga', 'queso']
+['queso', 'lechuga']

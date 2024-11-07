@@ -1,38 +1,31 @@
 import networkx as nx
-import pandas as pd
-from collections import deque 
-import warnings
-##import matplotlib.pyplot as plt
+from collections import deque
 
-warnings.filterwarnings("ignore")
-
+# DFS iterativo
 def dfs(persona, personVisit, graph):
-    if personVisit[persona]: return
-    personVisit[persona] = True
-    
-    for amigo in graph.neighbors(persona):
-        dfs(amigo, personVisit, graph) 
+    stack = [persona]  # Usamos una pila explícita para evitar recursión
+    while stack:
+        actual = stack.pop()  # Tomamos el último nodo de la pila
+        if not personVisit[actual]:
+            personVisit[actual] = True
+            for amigo in graph.neighbors(actual):
+                if not personVisit[amigo]:
+                    stack.append(amigo)
 
+# Encontrar grupos de amigos usando DFS
 def find_friend_groups_dfs(graph):
     nroGrupos = 0
-    personVisit = {}
-    
-    for persona in graph.nodes():
-        personVisit[persona] = False
-
+    personVisit = {persona: False for persona in graph.nodes()}
     for persona in graph.nodes():
         if not personVisit[persona]:
             nroGrupos += 1
             dfs(persona, personVisit, graph)
-
     return nroGrupos
-#complejidad temporal: O(V+E)
-#complejidad espacial: O(V+E)
 
+# BFS auxiliar
 def bfs(personaIni, visit, graph):
     cola = deque([personaIni])
-    visit.add(personaIni)
-    
+    visit.add(personaIni)  # Usamos 'add' en un set, no en un diccionario
     while cola:
         actual = cola.popleft()
         for amigo in graph.neighbors(actual):
@@ -40,21 +33,18 @@ def bfs(personaIni, visit, graph):
                 visit.add(amigo)
                 cola.append(amigo)
 
+
+# Encontrar grupos de amigos usando BFS
 def find_friend_groups_bfs(graph):
     nroGrupos = 0
-    personVisit = {}
-    
+    personVisit = set()  # Usamos un set vacío en lugar de un diccionario
     for persona in graph.nodes():
-        personVisit[persona] = False
-
-    for persona in graph.nodes():
-        if not personVisit[persona]:
+        if persona not in personVisit:  # Reemplazamos la lógica de diccionario por set
             nroGrupos += 1
             bfs(persona, personVisit, graph)
-
     return nroGrupos
 
-    
+# Recomendación de amigos
 def recommend_friends(graph):
     recomendaciones = {}
     for persona in graph.nodes():
@@ -66,44 +56,74 @@ def recommend_friends(graph):
         recomendaciones[persona] = list(amigosRecomend)
     return recomendaciones
 
+# Encontrar el amigo más popular
 def most_popular_friend(graph):
-    nroAmigos = 0
-    for nodo in graph.nodes():
-        if nroAmigos < graph.degree[nodo]:
-            amigoPopular = nodo
-            nroAmigos = graph.degree[nodo]
-    return [amigoPopular, nroAmigos]
+    amigoPopular = max(graph.nodes, key=lambda x: graph.degree[x])
+    nroAmigos = graph.degree[amigoPopular]
+    return amigoPopular, nroAmigos
 
-def dfs_paths(graph, start):
-    stack = [(start, [start])]  # Pila que contiene el nodo y el camino hasta él
+# Camino más corto usando BFS
+def bfs_paths(graph, start):
+    queue = deque([(start, [start])])
     visited = set([start])
-    paths = {start: [start]}  # Diccionario que guarda el camino a cada nodo
-
-    while stack:
-        current_node, path = stack.pop()
-
-        for neighbor in graph[current_node]:
+    paths = {start: [start]}
+    while queue:
+        current_node, path = queue.popleft()
+        for neighbor in graph.neighbors(current_node):
             if neighbor not in visited:
                 visited.add(neighbor)
                 new_path = path + [neighbor]
-                paths[neighbor] = new_path  # Guardamos el camino al vecino
-                stack.append((neighbor, new_path))
-
+                paths[neighbor] = new_path
+                queue.append((neighbor, new_path))
     return paths
 
-def bfs_paths(graph, start):
-    queue = deque([(start, [start])])  # La cola ahora incluye el camino hasta el nodo actual
+# Camino más corto usando DFS
+def dfs_paths(graph, start):
+    stack = [(start, [start])]
     visited = set([start])
-    paths = {start: [start]}  # Diccionario que almacena el camino más corto a cada nodo
+    paths = {start: [start]}
+    while stack:
+        current_node, path = stack.pop()
+        for neighbor in graph.neighbors(current_node):
+            if neighbor not in visited:
+                visited.add(neighbor)
+                new_path = path + [neighbor]
+                paths[neighbor] = new_path
+                stack.append((neighbor, new_path))
+    return paths
+
+# Verificar si hay ciclos en el grafo
+def has_cycle(graph):
+    visited = set()
+
+    def dfs_cycle(node, parent):
+        visited.add(node)
+        for neighbor in graph.neighbors(node):
+            if neighbor not in visited:
+                if dfs_cycle(neighbor, node):
+                    return True
+            elif parent != neighbor:
+                return True
+        return False
+
+    return any(dfs_cycle(node, None) for node in graph if node not in visited)
+def shortest_path(graph, person1, person2):
+    # Usar BFS para encontrar el camino más corto entre person1 y person2
+    if person1 == person2:
+        return [person1]
+
+    # Cola para BFS, con el nodo inicial y el camino
+    queue = deque([(person1, [person1])])
+    visited = set([person1])
 
     while queue:
         current_node, path = queue.popleft()
 
-        for neighbor in graph[current_node]:
+        for neighbor in graph.neighbors(current_node):
             if neighbor not in visited:
+                if neighbor == person2:
+                    return path + [neighbor]
                 visited.add(neighbor)
-                new_path = path + [neighbor]
-                paths[neighbor] = new_path  # Guardamos el camino a cada nodo alcanzable
-                queue.append((neighbor, new_path))
+                queue.append((neighbor, path + [neighbor]))
 
-    return paths
+    return None  # Si no hay un camino entre person1 y person2
